@@ -32,22 +32,23 @@ The game engine has been compiled down to a binary so that you can run it on any
 
 To run the server, locate your operating system and run the associated command in your terminal at the root of the project.
 
-| Your OS               | Command to start the API                                  |
-| --------------------- | --------------------------------------------------------- |
-| Mac                   | `ORIGIN_ALLOWED=http://localhost:3000 ./bin/server-darwin-amd64`   |
-| Windows               | `ORIGIN_ALLOWED=http://localhost:3000 ./bin/server-windows-amd64.exe`   |
-| Linux (Ubuntu, etc..) | `ORIGIN_ALLOWED=http://localhost:3000 ./bin/server-linux-amd64` |
+| Your OS               | Command to start the API                                              |
+| --------------------- | --------------------------------------------------------------------- |
+| Mac                   | `ORIGIN_ALLOWED=http://localhost:3000 ./bin/server-darwin-amd64`      |
+| Windows               | `ORIGIN_ALLOWED=http://localhost:3000 ./bin/server-windows-amd64.exe` |
+| Linux (Ubuntu, etc..) | `ORIGIN_ALLOWED=http://localhost:3000 ./bin/server-linux-amd64`       |
 
 Note that this process will use your terminal tab, so you will have to open a new tab and navigate back to the project root to start the front end.
 
 #### WINDOWS USERS -- Setting Environment Variables
+
 If you are using a windows machine:
-1. `cd` into the root of the project containing data.json 
+
+1. `cd` into the root of the project containing data.json
 2. Run the following command to add the environment variable:
-```set DATA_FILE=./data.json```
+   `set DATA_FILE=./data.json`
 
 If you still run into issues running the API server on your machine, you can run this project in the Udacity classroom.
-
 
 ### Start the Frontend
 
@@ -85,14 +86,14 @@ Information about a single race
 - status: RaceStatus ("unstarted" | "in-progress" | "finished")
 - positions object[] ([{ car: object, final_position: number (omitted if empty), speed: number, segment: number}])
 
-[POST] `api/races`
+[POST] `api/races` **_ there are issues with the resonse of this api end point _**
 Create a race
 
-- id: number
-- track: string
-- player_id: number
+- id: number (this field is "ID" in the server response)
+- track: string (this field is "Track" in the server response and it's an object with name and id properties)
+- player_id: number ((this field is "PlayerID" in the server response))
 - cars: Cars[] (array of cars in the race)
-- results: Cars[] (array of cars in the position they finished, available if the race is finished)
+- results: Cars[] (array of cars in the position they finished, available if the race is finished) ("Results" object with "positions" and "status" properties)
 
 [POST] `api/races/${id}/start`
 Begin a race
