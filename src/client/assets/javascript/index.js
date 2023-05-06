@@ -82,11 +82,14 @@ async function handleCreateRace() {
   renderAt("#race", renderRaceStartView());
 
   // TODO - Get player_id and track_id from the store
+  const { player_id, track_id } = store;
 
   // const race = TODO - invoke the API call to create the race, then save the result
+  const race = await createRace(player_id, track_id);
 
   // TODO - update the store with the race id
   // For the API to work properly, the race id should be race id - 1
+  store.race_id = race.id - 1;
 
   // The race has been created, now start the countdown
   // TODO - call the async function runCountdown
@@ -341,19 +344,22 @@ async function getRacers() {
   }
 }
 
-function createRace(player_id, track_id) {
+async function createRace(player_id, track_id) {
   player_id = parseInt(player_id);
   track_id = parseInt(track_id);
   const body = { player_id, track_id };
-
-  return fetch(`${SERVER}/api/races`, {
-    method: "POST",
-    ...defaultFetchOpts(),
-    dataType: "jsonp",
-    body: JSON.stringify(body),
-  })
-    .then((res) => res.json())
-    .catch((err) => console.log("Problem with createRace request::", err));
+  try {
+    const res = await fetch(`${SERVER}/api/races`, {
+      method: "POST",
+      ...defaultFetchOpts(),
+      dataType: "jsonp",
+      body: JSON.stringify(body),
+    });
+    const race = await res.json();
+    return race;
+  } catch (err) {
+    console.log("Problem with createRace request::", err);
+  }
 }
 
 function getRace(id) {
