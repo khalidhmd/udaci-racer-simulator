@@ -394,8 +394,20 @@ function startRace(id) {
     .catch((err) => console.log("Problem with getRace request::", err));
 }
 
-function accelerate(id) {
+async function accelerate(id) {
   // POST request to `${SERVER}/api/races/${id}/accelerate`
   // options parameter provided as defaultFetchOpts
   // no body or datatype needed for this request
+
+  //   const body = { player_id, track_id };
+  try {
+    await fetch(`${SERVER}/api/races/${id}/accelerate`, {
+      method: "POST",
+      ...defaultFetchOpts(),
+      //   dataType: "jsonp",
+      //   body: JSON.stringify(body),
+    });
+  } catch (err) {
+    console.log("Problem with accelerate request::", err);
+  }
 }
