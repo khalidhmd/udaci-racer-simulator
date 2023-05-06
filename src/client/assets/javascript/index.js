@@ -102,23 +102,27 @@ async function handleCreateRace() {
   await runRace(store.race_id);
 }
 
-function runRace(raceID) {
-  return new Promise((resolve) => {
-    // TODO - use Javascript's built in setInterval method to get race info every 500ms
-    /* 
-		TODO - if the race info status property is "in-progress", update the leaderboard by calling:
+async function runRace(raceID) {
+  // TODO - use Javascript's built in setInterval method to get race info every 500ms
+  try {
+    const interval = setInterval(() => {
+      const race = getRace(raceID);
 
-		renderAt('#leaderBoard', raceProgress(res.positions))
-	*/
-    /* 
-		TODO - if the race info status property is "finished", run the following:
+      //TODO - if the race info status property is "in-progress", update the leaderboard by calling:
+      if (race.status == "in-progress") {
+        renderAt("#leaderBoard", raceProgress(race.positions));
+      }
 
-		clearInterval(raceInterval) // to stop the interval from repeating
-		renderAt('#race', resultsView(res.positions)) // to render the results view
-		reslove(res) // resolve the promise
-	*/
-  });
-  // remember to add error handling for the Promise
+      //TODO - if the race info status property is "finished", run the following:
+      if (race.status == "finished") {
+        clearInterval(interval); // to stop the interval from repeating
+        renderAt("#race", resultsView(race.positions)); // to render the results view
+      }
+    }, 500);
+  } catch (error) {
+    // remember to add error handling for the Promise
+    console.log(error.message);
+  }
 }
 
 async function runCountdown() {
@@ -348,7 +352,7 @@ async function getRacers() {
     const cars = await res.json();
     return cars;
   } catch (err) {
-    console.log("Error getting info from api", err.message);
+    console.log("Error getting cars info from api", err.message);
   }
 }
 
@@ -370,8 +374,15 @@ async function createRace(player_id, track_id) {
   }
 }
 
-function getRace(id) {
+async function getRace(id) {
   // GET request to `${SERVER}/api/races/${id}`
+  try {
+    const res = await fetch(`${SERVER}/api/races/${id}`);
+    const race = await res.json();
+    return race;
+  } catch (err) {
+    console.log("Error getting race info from api", err.message);
+  }
 }
 
 function startRace(id) {
