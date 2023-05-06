@@ -99,6 +99,7 @@ async function handleCreateRace() {
   await startRace(store.race_id);
 
   // TODO - call the async function runRace
+  await runRace(store.race_id);
 }
 
 function runRace(raceID) {
