@@ -181,9 +181,10 @@ function handleSelectTrack(target) {
   store.track_id = target.id;
 }
 
-function handleAccelerate() {
+async function handleAccelerate() {
   console.log("accelerate button clicked");
   // TODO - Invoke the API call to accelerate
+  await accelerate(store.player_id);
 }
 
 // HTML VIEWS ------------------------------------------------
