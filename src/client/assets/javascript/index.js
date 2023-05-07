@@ -1,7 +1,7 @@
 // PROVIDED CODE BELOW (LINES 1 - 80) DO NOT REMOVE
 
 // The store will hold all information needed globally
-let store = {
+const store = {
   track_id: undefined,
   player_id: undefined,
   race_id: undefined,
@@ -79,28 +79,32 @@ async function delay(ms) {
 
 // This async function controls the flow of the race, add the logic and error handling
 async function handleCreateRace() {
-  // render starting UI
-  renderAt("#race", renderRaceStartView());
+  try {
+    // render starting UI
+    renderAt("#race", renderRaceStartView());
 
-  // TODO - Get player_id and track_id from the store
-  const { player_id, track_id } = store;
+    // TODO - Get player_id and track_id from the store
+    const { player_id, track_id } = store;
 
-  // const race = TODO - invoke the API call to create the race, then save the result
-  const race = await createRace(player_id, track_id);
+    // const race = TODO - invoke the API call to create the race, then save the result
+    const race = await createRace(player_id, track_id);
 
-  // TODO - update the store with the race id
-  // For the API to work properly, the race id should be race id - 1
-  store.race_id = race.ID - 1;
+    // TODO - update the store with the race id
+    // For the API to work properly, the race id should be race id - 1
+    store.race_id = race.ID - 1;
 
-  // The race has been created, now start the countdown
-  // TODO - call the async function runCountdown
-  await runCountdown();
+    // The race has been created, now start the countdown
+    // TODO - call the async function runCountdown
+    await runCountdown();
 
-  //   // TODO - call the async function startRace
-  await startRace(store.race_id);
+    //   // TODO - call the async function startRace
+    await startRace(store.race_id);
 
-  //   // TODO - call the async function runRace
-  await runRace(store.race_id);
+    //   // TODO - call the async function runRace
+    await runRace(store.race_id);
+  } catch (error) {
+    console.log(error.message);
+  }
 }
 
 async function runRace(raceID) {
@@ -284,7 +288,7 @@ function resultsView(positions) {
 }
 
 function raceProgress(positions) {
-  let userPlayer = positions.find((e) => e.id === store.player_id);
+  const userPlayer = positions.find((e) => e.id === store.player_id);
 
   userPlayer.driver_name += " (you)";
 
